@@ -34,11 +34,15 @@ async def to_code(config):
     await cg.register_component(var, config)
 
     if CONF_SERVER in config:
-        conf = config[CONF_SERVER]
-        server = cg.new_Pvariable(conf[CONF_ID])
-        await cg.register_component(server, conf)
-        cg.add(server.set_manufacturer(conf[CONF_MANUFACTURER]))
-        if CONF_MODEL in conf:
-            cg.add(server.set_model(conf[CONF_MODEL]))
-        cg.add_define("USE_ESP32_BLE_SERVER")
+        server = await server_to_code(config[CONF_SERVER])
         cg.add(var.set_server(server))
+
+
+async def server_to_code(config):
+    var = cg.new_Pvariable(config[CONF_ID])
+    await cg.register_component(var, config)
+    cg.add(var.set_manufacturer(config[CONF_MANUFACTURER]))
+    if CONF_MODEL in config:
+        cg.add(var.set_model(config[CONF_MODEL]))
+    cg.add_define("USE_ESP32_BLE_SERVER")
+    return var
