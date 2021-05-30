@@ -43,6 +43,10 @@ void BLEServer::setup() {
     this->controller_->setup();
   }
 
+  for (auto *component : this->service_components_) {
+    component->setup_service();
+  }
+
   ESP_LOGD(TAG, "BLE Server set up complete...");
 }
 
