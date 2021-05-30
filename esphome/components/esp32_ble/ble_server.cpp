@@ -38,6 +38,11 @@ void BLEServer::setup() {
 
   this->setup_server_();
 
+  if (this->use_controller_) {
+    this->controller_ = new BLEController(this);
+    this->controller_->setup();
+  }
+
   ESP_LOGD(TAG, "BLE Server set up complete...");
 }
 
